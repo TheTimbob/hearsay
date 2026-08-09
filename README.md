@@ -12,6 +12,7 @@ The Onion or the Babylon Bee — the headline is real, everything after it is in
 2. **Evaluate** — a model scores each headline for satirical potential and returns a verdict with a reason
 3. **Generate** — accepted headlines get a full article and an accompanying image
 4. **Store** — headlines, verdicts, articles, and image filenames persist to SQLite so nothing is processed twice
+5. **Publish** — a static page renders whatever is in the database as a grid of cards
 
 The evaluation step is the part worth pointing at. Rather than satirizing every headline that comes
 through the feed, the pipeline filters first and records *why* each one was accepted or rejected —
@@ -52,3 +53,13 @@ poetry run python src/main.py
 
 One run walks the feed, stops at the first headline it hasn't already seen and judges suitable,
 generates the article and image, writes both to the database, and exits.
+
+To render what's been generated so far:
+
+```
+poetry run python src/build_site.py
+```
+
+This writes `site/index.html` — a single self-contained page, no server and no build step, that
+lays out every stored article as a card with its image. Open it directly in a browser. It reads the
+database and nothing else, so it is safe to re-run any time and is not part of the generation path.
