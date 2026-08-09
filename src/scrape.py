@@ -36,7 +36,7 @@ def evaluate_title(title):
     with open(TITLE_INSTRUCTIONS_FILE, 'r') as file:
         instructions = file.read()
         response = client.responses.create(
-            model="gpt-4o",
+            model="gpt-5.6-luna",
             instructions=instructions,
             input=title,
         )

@@ -1,8 +1,8 @@
+import base64
 import json
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
-import requests
 
 
 load_dotenv()
@@ -36,15 +36,16 @@ def get_image_instructions():
 
 def create_article(article_header):
     prompt = get_prompt()
-    prompt = f"{prompt}\n{article_header}"
     instructions = get_article_instructions()
 
     if not prompt or not instructions:
         print("Error: Prompt or instructions not found.")
         return False
 
+    prompt = f"{prompt}\n{article_header}"
+
     response = client.responses.create(
-        model="gpt-4o",
+        model="gpt-5.6-terra",
         instructions=instructions,
         input=prompt,
     )
@@ -61,23 +62,22 @@ def create_image(article_title):
     prompt = f"{instructions}\n{article_title}"
 
     response = client.images.generate(
-        model="dall-e-3",
+        model="gpt-image-2",
         prompt=prompt,
         size="1024x1024",
-        quality="standard",
+        quality="high",
         n=1,
     )
-    print(f"Image created: {response.data[0].url}\n")
-    return response.data[0].url
+    print("Image created.\n")
+    return response.data[0].b64_json
 
 
-def download_image(image_url, filename):
-    response = requests.get(image_url)
+def save_image(image_b64, filename):
+    if not image_b64:
+        print("Failed to save image: no image data.\n")
+        return
 
-    if response.status_code == 200:
-        with open(os.path.join(IMAGES_PATH, filename), 'wb') as file:
-            file.write(response.content)
-        print(f"Image saved as {filename}\n")
-    else:
-        print("Failed to download image.\n")
+    with open(os.path.join(IMAGES_PATH, filename), 'wb') as file:
+        file.write(base64.b64decode(image_b64))
+    print(f"Image saved as {filename}\n")
 

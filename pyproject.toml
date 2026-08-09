@@ -1,7 +1,7 @@
 [project]
-name = "fakenews"
+name = "hearsay"
 version = "0.1.0"
-description = "Fake NEws"
+description = "A satire engine that reads real headlines and writes the news that didn't happen."
 authors = [
     {name = "Tim Scott",email = "99059109+TheTimbob@users.noreply.github.com"}
 ]

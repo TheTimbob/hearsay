@@ -1,6 +1,15 @@
+import re
+
 from database import store_title, title_exists, store_article
-from generate import create_article, create_image, download_image
+from generate import create_article, create_image, save_image
 from scrape import evaluate_title, get_rss_feed_entries
+
+SLUG_MAX_LENGTH = 60
+
+
+def slugify(title):
+    slug = re.sub(r'[^a-z0-9]+', '_', title.lower()).strip('_')
+    return slug[:SLUG_MAX_LENGTH].strip('_') or 'article'
 
 
 def main():
@@ -27,9 +36,9 @@ def main():
             article = create_article(title)
             print(article)
 
-            image_url = create_image(title)
-            image_filename = f"{title[:25].lower().replace(' ', '_')}.png"
-            download_image(image_url, image_filename)
+            image_b64 = create_image(title)
+            image_filename = f"{title_id}_{slugify(title)}.png"
+            save_image(image_b64, image_filename)
 
             store_article(title_id, article, image_filename)
             exit(0)
