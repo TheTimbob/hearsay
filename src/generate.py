@@ -8,6 +8,7 @@ from openai import OpenAI
 load_dotenv()
 
 PROMPT_FILE = 'prompts/inputs.json'
+PROMPT_KEY = 'default'
 ARTICLE_INSTRUCTIONS_FILE = 'prompts/article-instructions.txt'
 IMAGE_INSTRUCTIONS_FILE = 'prompts/image-instructions.txt'
 IMAGES_PATH = 'images/'
@@ -18,7 +19,7 @@ client = OpenAI(api_key=API_KEY)
 def get_prompt():
     with open(PROMPT_FILE, 'r') as file:
         data = json.load(file)
-        return data.get('5')
+        return data.get(PROMPT_KEY)
     return False
 
 
@@ -34,7 +35,7 @@ def get_image_instructions():
     return False
 
 
-def create_article(article_header):
+def create_article(article_header, reason=None):
     prompt = get_prompt()
     instructions = get_article_instructions()
 
@@ -43,6 +44,9 @@ def create_article(article_header):
         return False
 
     prompt = f"{prompt}\n{article_header}"
+
+    if reason:
+        prompt = f"{prompt}\n\nThe angle worth taking: {reason}"
 
     response = client.responses.create(
         model="gpt-5.6-terra",

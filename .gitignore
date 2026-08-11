@@ -2,8 +2,7 @@
 __pycache__/
 .env
 
-# Prompts, instructions, and database
-prompts/*
+# Database and generated images
 database/*
 images/*
 

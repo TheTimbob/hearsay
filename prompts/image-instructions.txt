@@ -1,0 +1,1 @@
+Create a realistic image based on the following headline that would be good enough on Fox News or CNN's website. Avoid using text and try to reduce blur. If a celebrity or person is named, don't try to generate humans:

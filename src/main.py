@@ -33,7 +33,7 @@ def main():
         print(f"Reason: {reason}\n")
 
         if suitable:
-            article = create_article(title)
+            article = create_article(title, reason)
             print(article)
 
             image_b64 = create_image(title)

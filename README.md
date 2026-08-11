@@ -33,13 +33,16 @@ Three environment variables, read from `.env`:
 | `RSS_FEED_URL` | RSS feed to pull headlines from |
 | `DB_CONNECTION_STRING` | Path to the SQLite database file |
 
-Prompt files live in `prompts/` and are not committed — the satire instructions are the part worth
-writing yourself:
+Prompt files live in `prompts/` and are committed, so the pipeline runs as-is. They are also the
+part most worth rewriting — the instructions are the voice:
 
-- `prompts/inputs.json` — prompt variants, keyed by string
-- `prompts/title-instructions.txt` — headline evaluation, must return JSON with `suitable` and `reason`
+- `prompts/inputs.json` — the article prompt, under the `default` key
+- `prompts/title-instructions.txt` — headline evaluation criteria, must return JSON with `suitable` and `reason`
 - `prompts/article-instructions.txt` — article voice and structure
 - `prompts/image-instructions.txt` — image style
+
+The evaluation step's `reason` is passed forward into the article prompt, so whatever angle made a
+headline worth using is handed to the writer rather than discarded.
 
 The SQLite database expects two tables, `titles` and `articles`. See `src/database.py` for the
 columns each one is written with.
