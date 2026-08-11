@@ -106,15 +106,20 @@ CARD_TEMPLATE = """<article>
 def get_articles():
     connection = sqlite3.connect(DB_CONNECTION_STRING)
     cursor = connection.cursor()
-    cursor.execute('''
-        SELECT t.title, a.output, a.image_filename
-        FROM articles a
-        JOIN titles t ON t.rowid = a.title_id
-        ORDER BY a.rowid DESC
-    ''')
-    rows = cursor.fetchall()
-    cursor.close()
-    connection.close()
+    try:
+        cursor.execute('''
+            SELECT t.title, a.output, a.image_filename
+            FROM articles a
+            JOIN titles t ON t.rowid = a.title_id
+            ORDER BY a.rowid DESC
+        ''')
+        rows = cursor.fetchall()
+    except sqlite3.OperationalError:
+        print("No articles table yet. Run src/main.py first.\n")
+        rows = []
+    finally:
+        cursor.close()
+        connection.close()
     return rows
 
 

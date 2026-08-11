@@ -25,7 +25,7 @@ Python 3.9+, OpenAI (`gpt-5.6-terra` for articles, `gpt-5.6-luna` for headline e
 
 ## Configuration
 
-Three environment variables, read from `.env`:
+Copy `.env.example` to `.env` and fill in three values:
 
 | Variable | Purpose |
 | --- | --- |
@@ -44,12 +44,13 @@ part most worth rewriting — the instructions are the voice:
 The evaluation step's `reason` is passed forward into the article prompt, so whatever angle made a
 headline worth using is handed to the writer rather than discarded.
 
-The SQLite database expects two tables, `titles` and `articles`. See `src/database.py` for the
-columns each one is written with.
+The SQLite file and its two tables are created on first run. There is no migration step and no
+setup script — point `DB_CONNECTION_STRING` at a path and it will be there.
 
 ## Running
 
 ```
+cp .env.example .env    # then fill it in
 poetry install
 poetry run python src/main.py
 ```
