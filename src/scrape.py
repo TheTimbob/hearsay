@@ -44,7 +44,7 @@ def evaluate_title(title):
             response_data = response.output_text.strip()
             try:
                 json_response = json.loads(response_data)
-                suitable = json_response.get('suitable', False)
+                suitable = str(json_response.get('suitable')).strip().lower() == 'true'
                 reason = json_response.get('reason', 'No reason provided')
                 return suitable, reason
             except json.JSONDecodeError:
